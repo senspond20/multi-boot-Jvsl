@@ -1,4 +1,18 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
 rootProject.name = 'app'
-include 'mod_com'
-include 'mod_lib'
 
+include 'mod-lib'
+
+//include 'mod-core-dev'
+//include 'mod-core-product'
+include 'mod-app'
+//include 'mod-batch'
+//include 'mod-web'
+//include 'mod-admin'
+//include 'mod-api-auth'
+//include 'mod-api-op'
+//include 'mod-api-v1'

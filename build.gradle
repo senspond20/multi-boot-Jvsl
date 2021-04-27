@@ -12,7 +12,7 @@ buildscript {
 }
 
 allprojects {
-    group 'com.sungjun'
+    group 'com.semod'
     version '1.0-SNAPSHOT'
 }
 
@@ -28,15 +28,136 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+        compileOnly 'org.projectlombok:lombok:1.18.16'
+        annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    }
+
+// 해당 task로 서브 모듈 추가시 기초적인 디렉토리를 자동으로 생성해줍니다.
+    task initSourceFolders {
+        sourceSets*.java.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
+
+        sourceSets*.resources.srcDirs*.each {
+            if (!it.exists()) {
+                it.mkdirs()
+            }
+        }
     }
 }
 
-project(':mod_lib') {
+/**
+ * IsDev (true : 개발용 / false : 배포용 )
+ */
+boolean IsDEV = true;
+
+/**
+ * 독립 라이브러리 모듈(시스템과 무관하게 어디서나 사용가능한 모듈)
+ */
+project(':mod-lib') {
     dependencies {
-        compile project(':mod_com')
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     }
 }
+
+project(':mod-app') {
+    dependencies {
+        compile project(':mod-lib')
+    }
+}
+
+/**
+ * DATA_BASE 개발용
+ */
+//project(':mod-core-dev') {
+//    dependencies {
+//        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//        compile('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
+//    }
+//}
+/**
+ * DATA_BASE 배포용
+ */
+//project(':mod-core-product') {
+//    dependencies {
+//        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//        compile('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
+//    }
+//}
+
+
+/**
+ * 스프링 WEB
+ */
+//project(':mod-web'){
+//    dependencies {
+//        if(IsDEV == true){
+//            compile project(':mod-core-dev')
+//        } else {
+//            compile project(':mod-core-product')
+//        }
+//
+//        implementation 'org.springframework.boot:spring-boot-starter-web'
+//        implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
+//        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//    }
+//}
+/**
+ * 스프링 배치
+ */
+//project(':mod-batch'){
+//    dependencies {
+//        compile project(':mod-web')
+//        implementation 'org.springframework.boot:spring-boot-starter-batch'
+//        testImplementation 'org.springframework.batch:spring-batch-test'
+//    }
+//}
+/**
+ * 어드민 페이지 MVC
+ */
+//project(':mod-admin'){
+//    dependencies {
+//        compile project(':mod-web')
+//        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//        implementation 'org.springframework.boot:spring-boot-starter-security'
+//        implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//    }
+//}
+
+/**
+ * API 인증
+ */
+//project(':mod-api-auth'){
+//    dependencies {
+//        compile project(':mod-web')
+//        implementation 'org.springframework.boot:spring-boot-starter-security'
+//        compile('io.jsonwebtoken:jjwt-api:0.11.1')
+//        runtime('io.jsonwebtoken:jjwt-impl:0.11.1', 'io.jsonwebtoken:jjwt-jackson:0.11.1')
+//    }
+//}
+/**
+ * API 공공데이터 관련
+ */
+//project(':mod-api-op'){
+//    dependencies {
+//        compile project(':mod-web')
+//    }
+//}
+
+/**
+ * API
+ */
+//project(':mod-api-v1'){
+//    dependencies {
+//        compile project(':mod-web')
+//    }
+//}
+
 //
 //project(':Module_API_V1') {
 //    dependencies {
