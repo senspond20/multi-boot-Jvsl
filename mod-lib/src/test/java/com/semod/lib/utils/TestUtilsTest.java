@@ -1,6 +1,6 @@
 package com.semod.lib.utils;
 
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
 public class TestUtilsTest {
 
