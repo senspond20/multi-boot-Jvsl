@@ -1,23 +1,35 @@
 package com.semod.lib.structure;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-
+/**
+ * 직렬화시 순환참초가 발생할 수 있다. => @JsonBackReference 조치
+ * @param <T>
+ */
 @Getter
 @ToString(exclude = "parent") // parent 를 toString에서 제외.
 //@EqualsAndHashCode(of="data")
-public class MultiNode<T> {
-//    private int id;
+public class MultiNode<T> implements Serializable {
+    private static final long serialVersionUID = -4865946674835353945L;
+
+    @JsonManagedReference // 참조가 되는 앞부분을 의미하며, 정상적으로 직렬화를 수행한다.
     private T data;
+
+    @JsonBackReference // 참조가 되는 뒷부분을 의미하며, 직렬화를 수행하지 않는다.
     private MultiNode<T> parent;         // 부모 노드
+
+    @JsonManagedReference
     private List<MultiNode<T>> children; // 자식 노드들
 
     /**

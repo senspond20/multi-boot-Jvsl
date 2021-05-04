@@ -1,6 +1,8 @@
 package com.semod.lib.structure;
 
+import com.google.gson.JsonSerializer;
 import com.semod.lib.utils.JsonUtils;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +40,8 @@ public class MultiTableTest {
     void test(){
         MultiNode<String> node = new MultiTable<String>().convertTreeNode(list);
         System.out.println(node);
+
+        System.out.println(JsonUtils.test(node));
 //        System.out.println(JsonUtils.getPrettyJsonString(node));
 
 

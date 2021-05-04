@@ -1,5 +1,6 @@
 package com.semod.lib.structure;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -14,11 +15,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 //@ToString(exclude = "node")
 @ToString
+//@JsonIdentityReference(alwaysAsId = true) //직렬화시 id로만 출력된다
 public class MultiTable<T> {
     private int id;
     private int parentId;
     private T data;
-    private List<MultiTable<T>> items;
+//    private List<MultiTable<T>> items;
 
     /**
      * 생성자
@@ -26,12 +28,8 @@ public class MultiTable<T> {
      * @param data
      */
     public MultiTable(int id, T data){
-        this(id,0,data,null);
+        this(id,0,data);
     }
-    public MultiTable(int id, int parentId, T data){
-        this(id,parentId,data,null);
-    }
-    
     public MultiNode<T> convertTreeNode(List<MultiTable<T>> list){
         MultiNode<T> root = new MultiNode<T>(null);
         String key = "NodeKey";
