@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -20,7 +17,7 @@ import java.util.stream.Stream;
 @Getter
 @ToString(exclude = "parent") // parent 를 toString에서 제외.
 //@EqualsAndHashCode(of="data")
-public class MultiNode<T> implements Serializable {
+public class MultiNode<T> implements Serializable,Iterable<MultiNode<T>> {
     private static final long serialVersionUID = -4865946674835353945L;
 
     @JsonManagedReference // 참조가 되는 앞부분을 의미하며, 정상적으로 직렬화를 수행한다.
@@ -144,4 +141,8 @@ public class MultiNode<T> implements Serializable {
         return null;
     }
 
+    @Override
+    public Iterator<MultiNode<T>> iterator() {
+        return null;
+    }
 }
