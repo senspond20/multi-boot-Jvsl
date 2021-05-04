@@ -6,5 +6,6 @@ public class Run {
     public static void main(String[] args) {
         TestUtils t = new TestUtils();
         System.out.println(t.getName());
+        System.out.println("한글");
     }
 }
