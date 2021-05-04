@@ -19,27 +19,29 @@ public class MultiNodeTest {
                 .remove(5)
             .getParent()
             .add(8);
+
     }
     @Test
     void showTest(){
         System.out.println(root);
+        System.out.println( root.getChildren().get(0));
     }
 
     @Test
     void findChildTest(){
-        System.out.println(root.findChild(3));
-        System.out.println(root.findChild(7));
+        System.out.println(root.findFirstChild(3));
+        System.out.println(root.findFirstChild(7));
     }
 
 
     @Test
     void findParentTest(){
 
-        System.out.println(root.findChild(111));
-        System.out.println(root.findChild(2).getParent());
+        System.out.println(root.findFirstChild(111));
+        System.out.println(root.findFirstChild(2).getParent());
 
-        System.out.println(root.findChild(4)
-                               .findChild(6)
+        System.out.println(root.findFirstChild(4)
+                               .findFirstChild(6)
                                .getParent());
 
     }

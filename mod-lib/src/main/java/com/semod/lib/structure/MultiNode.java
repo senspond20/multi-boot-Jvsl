@@ -1,16 +1,19 @@
 package com.semod.lib.structure;
 
-//import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 
 @Getter
 @ToString(exclude = "parent") // parent 를 toString에서 제외.
-//@EqualsAndHashCode(of="id")
+//@EqualsAndHashCode(of="data")
 public class MultiNode<T> {
 //    private int id;
     private T data;
@@ -52,6 +55,7 @@ public class MultiNode<T> {
         if(this.children == null){
             this.children = new ArrayList<>();
         }
+
         this.children.add(childNode);
         return this;
     }
@@ -79,16 +83,41 @@ public class MultiNode<T> {
     }
 
     /**
+     * 최상단 루트노드를 리턴한다.
+     * @return
+     */
+    public MultiNode<T> findRoot(){
+        return findRoot(this);
+    }
+    private MultiNode<T> findRoot(MultiNode<T> current){
+        MultiNode<T> node = current.getParent();
+        if(node.getParent() != null){
+            return this.findRoot(node);
+        }else{
+            return node;
+        }
+    }
+    /**
+     * 자식노드에서 data를 찾아 노드객체를 반환 ( 현재노드의 자식노드에서 검색)
+     * ( 자식노드에 동일한 값을 가지는 데이터가 여러개 존재하는 경우를 생각 )
+     * @param data
+     * @return
+     */
+    public Stream<MultiNode<T>> findChild(T data) {
+        Stream<MultiNode<T>> stream = this.getChildren()
+                                        .stream()
+                                        .filter(n -> data == n.getData());
+        return stream;
+    }
+
+    /**
      * 자식노드에서 data를 찾아 노드객체를 반환 ( 현재노드의 자식노드에서 검색)
      * @param data
      * @return
      */
-    public MultiNode<T> findChild(T data) {
+    public MultiNode<T> findFirstChild(T data) {
         // Optional null일수도 있는 Wrapper클래스
-        Optional<MultiNode<T>> first = this.getChildren()
-                                           .stream()
-                                           .filter(n -> data == n.getData())
-                                           .findFirst();
+        Optional<MultiNode<T>> first = this.findChild(data).findFirst();
         if (!first.isPresent()) return null;
         return first.get();
     }
